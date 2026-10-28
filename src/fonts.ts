@@ -1,0 +1,18 @@
+// Шрифты хранятся вместе с сайтом: презентации работают и в аудиториях с ограниченным интернетом.
+// Подключены только кириллица и латиница нужных начертаний.
+import '@fontsource/unbounded/cyrillic-400.css'
+import '@fontsource/unbounded/latin-400.css'
+import '@fontsource/unbounded/cyrillic-500.css'
+import '@fontsource/unbounded/latin-500.css'
+import '@fontsource/onest/cyrillic-400.css'
+import '@fontsource/onest/latin-400.css'
+import '@fontsource/onest/cyrillic-500.css'
+import '@fontsource/onest/latin-500.css'
+import '@fontsource/onest/cyrillic-600.css'
+import '@fontsource/onest/latin-600.css'
+import '@fontsource/onest/cyrillic-700.css'
+import '@fontsource/onest/latin-700.css'
+import '@fontsource/jetbrains-mono/cyrillic-400.css'
+import '@fontsource/jetbrains-mono/latin-400.css'
+import '@fontsource/jetbrains-mono/cyrillic-500.css'
+import '@fontsource/jetbrains-mono/latin-500.css'

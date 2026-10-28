@@ -1,0 +1,127 @@
+@import 'tailwindcss';
+
+/*
+  Дизайн-система «ИБ: презентации».
+  Сайт — осознанно тёмный: тёмно-синий фон, графитовые поверхности, белый текст, бирюзовый акцент.
+  Слайды умеют переключаться в светлую схему для проекторов (data-slides="light").
+  Каждая презентация задаёт свой акцент (--accent-d / --accent-l) внутри общей палитры.
+*/
+:root {
+  --navy: #0b1a2c;
+  --navy-deep: #081321;
+  --graphite: #17212d;
+  --graphite-2: #1f2a37;
+  --line: #2a3748;
+  --white: #eef3f7;
+  --muted: #93a4b6;
+  --turquoise: #41d3c2;
+  --danger: #ff7a72;
+  --warn: #f4b740;
+  --good: #5fdda0;
+
+  --bg: var(--navy);
+  --panel: var(--graphite);
+  --raised: var(--graphite-2);
+  --fg: var(--white);
+  --accent: var(--turquoise);
+  color-scheme: dark;
+}
+
+/* Область слайда: свои токены, чтобы переключать светлую схему независимо от сайта */
+.slide-scope {
+  --bg: #0d1d31;
+  --panel: #15253a;
+  --raised: #1c2e45;
+  --line: #2b3f58;
+  --fg: #f2f6f9;
+  --muted: #9cb0c4;
+  --danger: #ff7a72;
+  --warn: #f4b740;
+  --good: #5fdda0;
+  --accent: var(--accent-d, var(--turquoise));
+}
+[data-slides='light'] .slide-scope {
+  --bg: #f6f8fa;
+  --panel: #ffffff;
+  --raised: #eaf0f5;
+  --line: #d5dee7;
+  --fg: #0e1b2a;
+  --muted: #526276;
+  --danger: #c2362e;
+  --warn: #a86400;
+  --good: #13814c;
+  --accent: var(--accent-l, #0b8a7e);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-warn: var(--warn);
+  --color-good: var(--good);
+  --color-navy-deep: var(--navy-deep);
+
+  --font-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --font-sans: 'Onest', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+html,
+body {
+  background: var(--navy);
+  color: var(--white);
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+button {
+  cursor: pointer;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Фоновая сетка — намёк на схемы и чертежи, без декоративных градиентов */
+.blueprint {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
