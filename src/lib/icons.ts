@@ -5,6 +5,8 @@ import {
   MapPin, MessageSquareWarning, MonitorSmartphone, Network, Phone, QrCode, Radar, RefreshCw, Router,
   Scale, ScanSearch, Server, ServerCrash, ShieldAlert, ShieldCheck, ShieldHalf, Siren, Skull, Smartphone,
   Sparkles, Target, Trash2, Usb, UserLock, UserX, Users, Wifi, Zap, Clock, Shuffle,
+  Ban, Boxes, Braces, ClipboardCheck, Code, Container, Cookie, Database, FileCode, Filter, Gauge, GitBranch,
+  ListChecks, Package, Plug, Route, ScrollText, SearchCode, Settings, Terminal, Timer, Upload, UserCheck, Webhook, Workflow,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -21,6 +23,10 @@ export const icons = {
   shield: ShieldCheck, shieldHalf: ShieldHalf, siren: Siren, skull: Skull, smartphone: Smartphone,
   sparkles: Sparkles, target: Target, trash: Trash2, usb: Usb, userLock: UserLock, userX: UserX,
   users: Users, wifi: Wifi, zap: Zap, clock: Clock, shuffle: Shuffle,
+  ban: Ban, boxes: Boxes, braces: Braces, clipboard: ClipboardCheck, code: Code, container: Container, cookie: Cookie,
+  database: Database, fileCode: FileCode, filter: Filter, gauge: Gauge, git: GitBranch, listChecks: ListChecks,
+  package: Package, plug: Plug, route: Route, scroll: ScrollText, searchCode: SearchCode, settings: Settings,
+  terminal: Terminal, timer: Timer, upload: Upload, userCheck: UserCheck, webhook: Webhook, workflow: Workflow,
 } satisfies Record<string, LucideIcon>
 
 export type IconKey = keyof typeof icons

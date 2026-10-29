@@ -370,6 +370,95 @@ function Risk() {
   )
 }
 
+/* ───────────── Структура JWT ───────────── */
+const JWT_PARTS = [
+  {
+    title: 'Заголовок',
+    raw: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9',
+    decoded: '{ "alg": "RS256", "typ": "JWT" }',
+    note: 'Алгоритм подписи. Сервер не должен ему слепо доверять',
+    color: 'text-warn',
+  },
+  {
+    title: 'Полезная нагрузка',
+    raw: 'eyJzdWIiOiJ1c2VyLTQyIiwicm9sZSI6InN0dWRlbnQiLCJleHAiOjE3NjcyMjU2MDB9',
+    decoded: '{ "sub": "user-42", "role": "student", "exp": 1767225600 }',
+    note: 'Утверждения (claims). Читаются без ключа — это Base64URL, а не шифр',
+    color: 'text-accent',
+  },
+  {
+    title: 'Подпись',
+    raw: 'kW3n…9xQ',
+    decoded: 'RS256( заголовок + "." + нагрузка, закрытый ключ )',
+    note: 'Защищает от подмены. Проверяется открытым ключом издателя',
+    color: 'text-good',
+  },
+]
+
+function Jwt() {
+  return (
+    <div className="flex flex-col gap-4 @5xl:gap-6">
+      <Box className="font-mono text-[12.5px] leading-relaxed break-all @5xl:text-[18px]">
+        {JWT_PARTS.map((p, i) => (
+          <Fragment key={p.title}>
+            {i > 0 && <span className="text-muted">.</span>}
+            <span className={p.color}>{p.raw}</span>
+          </Fragment>
+        ))}
+      </Box>
+      <div className="grid gap-3 @3xl:grid-cols-3 @5xl:gap-5">
+        {JWT_PARTS.map((p) => (
+          <Box key={p.title} className="flex flex-col gap-2 @5xl:gap-3">
+            <span className={`text-[14px] font-semibold @5xl:text-[19px] ${p.color}`}>{p.title}</span>
+            <span className="font-mono text-[12.5px] leading-snug break-words @5xl:text-[15.5px]">{p.decoded}</span>
+            <span className={small}>{p.note}</span>
+          </Box>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* ───────────── Потоки данных и границы доверия ───────────── */
+function Zone({ title, children, className = '' }: { title: string; children: ReactNode; className?: string }) {
+  return (
+    <div className={`flex min-w-0 flex-col gap-2.5 rounded-2xl border-2 border-dashed border-warn/55 p-3 @5xl:gap-3 @5xl:p-4 ${className}`}>
+      <span className="text-[12px] font-semibold text-warn @5xl:text-[15px]">{title}</span>
+      {children}
+    </div>
+  )
+}
+function Node({ title, text }: { title: string; text: string }) {
+  return (
+    <Box className="flex flex-col gap-1 @5xl:p-4">
+      <span className={strong}>{title}</span>
+      <span className={small}>{text}</span>
+    </Box>
+  )
+}
+
+function Dfd() {
+  return (
+    <div className="flex flex-col gap-2 @5xl:flex-row @5xl:items-stretch @5xl:gap-3">
+      <Zone title="Интернет · недоверенная зона" className="@5xl:w-[230px] @5xl:justify-center">
+        <Node title="Браузер (SPA)" text="Любые данные отсюда считаются враждебными" />
+      </Zone>
+      <Arr label="1 · HTTPS + токен" />
+      <Zone title="DMZ" className="@5xl:w-[230px] @5xl:justify-center">
+        <Node title="Обратный прокси" text="TLS, лимиты запросов, размер тела" />
+      </Zone>
+      <Arr label="2 · запрос" />
+      <Zone title="Внутренняя зона" className="flex-1">
+        <Node title="API-сервер (FastAPI)" text="Аутентификация, проверка прав, валидация" />
+        <div className="grid gap-2 @3xl:grid-cols-2 @5xl:gap-3">
+          <Node title="3 · База данных" text="Только параметризованные запросы" />
+          <Node title="4 · Хранилище файлов" text="Вне публичной директории" />
+        </div>
+      </Zone>
+    </div>
+  )
+}
+
 export function DiagramView({ d }: { d: Diagram }) {
   switch (d.type) {
     case 'cia':
@@ -390,5 +479,9 @@ export function DiagramView({ d }: { d: Diagram }) {
       return <HashDemo />
     case 'risk':
       return <Risk />
+    case 'jwt':
+      return <Jwt />
+    case 'dfd':
+      return <Dfd />
   }
 }

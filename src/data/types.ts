@@ -3,7 +3,7 @@ import type { IconKey } from '../lib/icons'
 /** Цветовая тема презентации внутри общей дизайн-системы */
 export type Tone = 'teal' | 'cyan' | 'sky' | 'amber' | 'coral' | 'violet' | 'mint'
 
-export type Section = 'basics' | 'threats' | 'tech' | 'practice'
+export type Section = 'basics' | 'threats' | 'tech' | 'practice' | 'dev'
 
 export interface Item {
   title: string
@@ -20,6 +20,13 @@ export interface CompareSide {
   items: string[]
 }
 
+/** Фрагмент кода. good — рекомендуемый вариант, bad — уязвимый (только для разбора) */
+export interface CodeBlock {
+  label?: string
+  tone?: 'good' | 'bad' | 'neutral'
+  code: string
+}
+
 export type Diagram =
   | { type: 'cia' }
   | { type: 'layers'; layers: Item[] }
@@ -30,6 +37,10 @@ export type Diagram =
   | { type: 'mitm' }
   | { type: 'hash' }
   | { type: 'risk' }
+  /** Структура подписанного JWT: заголовок, полезная нагрузка, подпись */
+  | { type: 'jwt' }
+  /** Схема потоков данных с границами доверия */
+  | { type: 'dfd' }
 
 export type Slide =
   /** Крупный тезис */
@@ -66,6 +77,8 @@ export type Slide =
   | { kind: 'checklist'; title: string; lead?: string; items: string[] }
   /** Схема / диаграмма */
   | { kind: 'diagram'; title: string; lead?: string; diagram: Diagram; caption?: string }
+  /** Фрагменты кода: один блок с пояснениями или два блока «уязвимо / исправлено» */
+  | { kind: 'code'; title: string; lead?: string; lang: string; blocks: CodeBlock[]; notes?: string[] }
   /** Шкала стойкости */
   | { kind: 'meter'; title: string; lead?: string; rows: { label: string; sample: string; bits: number; note: string }[]; note?: string }
   /** Выводы */

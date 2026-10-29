@@ -19,11 +19,24 @@ import p17 from './presentations/17-wifi'
 import p18 from './presentations/18-social-engineering'
 import p19 from './presentations/19-leaks'
 import p20 from './presentations/20-hygiene'
+import p21 from './presentations/21-owasp-top-10'
+import p22 from './presentations/22-threat-modeling'
+import p23 from './presentations/23-password-storage'
+import p24 from './presentations/24-jwt-oauth-oidc'
+import p25 from './presentations/25-rest-api-security'
+import p26 from './presentations/26-sql-injection'
+import p27 from './presentations/27-frontend-security'
+import p28 from './presentations/28-file-upload'
+import p29 from './presentations/29-docker-security'
+import p30 from './presentations/30-secure-sdlc'
+import p31 from './presentations/31-external-api'
 
 /** Порядок курса. Чтобы добавить презентацию — создайте файл в presentations/ и добавьте его сюда. */
 const ordered: Presentation[] = [
   p01, p02, p03, p04, p05, p06, p07, p08, p09, p10,
   p11, p12, p13, p14, p15, p16, p17, p18, p19, p20,
+  p21, p22, p23, p24, p25, p26, p27, p28, p29, p30,
+  p31,
 ]
 
 export const presentations: NumberedPresentation[] = ordered.map((p, i) => ({
@@ -39,6 +52,7 @@ export const sections: Record<Section, { title: string; text: string }> = {
   threats: { title: 'Угрозы и атаки', text: 'Как действуют злоумышленники' },
   tech: { title: 'Технологии защиты', text: 'Инструменты, которые защищают данные' },
   practice: { title: 'Повседневная практика', text: 'Правила для учёбы, работы и жизни' },
+  dev: { title: 'Безопасная разработка', text: 'Защита веб-приложений, API и процесса разработки' },
 }
 
 /** Акцент каждой темы. Значения подобраны для тёмного и светлого фона. */

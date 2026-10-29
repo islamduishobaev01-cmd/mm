@@ -64,7 +64,8 @@ function Hero() {
         <div className="mt-10 grid gap-12 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:gap-20">
           <div className="flex flex-col gap-8">
             <p className="max-w-[34ch] text-[19px] leading-snug text-fg/90 sm:text-[23px]">
-              20 презентаций о защите информации, цифровых угрозах и безопасной работе в современном мире.
+              {presentations.length} {plural(presentations.length, ['презентация', 'презентации', 'презентаций'])} о защите информации, цифровых
+              угрозах, безопасной разработке и работе в современном мире.
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#catalog" className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-[15px] font-semibold text-navy-deep hover:bg-accent/85">
@@ -245,7 +246,7 @@ function SiteFooter() {
     <footer className={`border-t border-line/70 ${gutter}`}>
       <div className={`${wrap} grid gap-8 py-10 text-[14px] leading-relaxed text-muted md:grid-cols-2`}>
         <p className="max-w-[60ch]">
-          Материалы подготовлены на основе международных стандартов ISO/IEC, публикаций NIST, рекомендаций CISA, NCSC и ENISA, а также
+          Материалы подготовлены на основе международных стандартов ISO/IEC, публикаций NIST, рекомендаций CISA, NCSC и ENISA, материалов OWASP и RFC IETF, а также
           законодательства о персональных данных. Источники указаны на последних слайдах каждой презентации.
         </p>
         <div>

@@ -1,8 +1,8 @@
 import { ArrowDown, ArrowRight, Check, CircleCheck, Lightbulb, X } from 'lucide-react'
 import { Fragment } from 'react'
-import type { CompareSide, Item, Slide } from '../../data/types'
+import type { CodeBlock, CompareSide, Item, Slide } from '../../data/types'
 import { pad2 } from '../../lib/format'
-import { Icon, IconTile, SlideBody, SlideHeader, SlideShell, gridCols } from './primitives'
+import { Icon, IconTile, SlideBody, SlideHeader, SlideShell, gridCols, useSlide } from './primitives'
 
 type Of<K extends Slide['kind']> = Extract<Slide, { kind: K }>
 
@@ -419,6 +419,86 @@ export function ChecklistSlide({ s }: { s: Of<'checklist'> }) {
             </li>
           ))}
         </ul>
+      </SlideBody>
+    </SlideShell>
+  )
+}
+
+/* ───────────── Фрагменты кода ───────────── */
+/** Маркер строчного комментария: комментарии приглушаются, остальной код — без подсветки */
+const commentMark: Record<string, string> = { python: '#', yaml: '#', dockerfile: '#', bash: '#', http: '', sql: '--', js: '//', ts: '//', html: '' }
+
+function CodeLine({ line, mark }: { line: string; mark: string }) {
+  if (!mark) return <>{line}</>
+  if (line.trimStart().startsWith(mark)) return <span className="text-muted">{line}</span>
+  const i = line.indexOf(`  ${mark} `)
+  if (i < 0) return <>{line}</>
+  return (
+    <>
+      {line.slice(0, i)}
+      <span className="text-muted">{line.slice(i)}</span>
+    </>
+  )
+}
+
+function CodePanel({ b, lang, size }: { b: CodeBlock; lang: string; size: string }) {
+  const { thumb } = useSlide()
+  const tone = b.tone ?? 'neutral'
+  const border = tone === 'good' ? 'border-good/45' : tone === 'bad' ? 'border-danger/45' : 'border-line'
+  const head = tone === 'good' ? 'text-good' : tone === 'bad' ? 'text-danger' : 'text-muted'
+  const mark = commentMark[lang] ?? '#'
+  return (
+    <figure className={`flex min-w-0 flex-col overflow-hidden rounded-xl border bg-panel ${border}`}>
+      <figcaption className={`flex items-center justify-between gap-3 border-b border-line bg-raised px-4 py-2 text-[12.5px] font-semibold @5xl:px-5 @5xl:text-[15px] ${head}`}>
+        <span className="flex items-center gap-2">
+          {tone === 'good' && <Check className="size-4 @5xl:size-[18px]" strokeWidth={2.5} />}
+          {tone === 'bad' && <X className="size-4 @5xl:size-[18px]" strokeWidth={2.5} />}
+          {b.label ?? 'Пример'}
+        </span>
+        <span className="font-mono font-normal text-muted">{lang}</span>
+      </figcaption>
+      <pre
+        tabIndex={thumb ? -1 : 0}
+        className={`overflow-x-auto px-4 py-3 font-mono [font-variant-ligatures:none] text-[12.5px] leading-[1.55] text-fg/90 @5xl:px-5 @5xl:py-4 ${size}`}
+      >
+        <code>
+          {b.code.split('\n').map((l, i) => (
+            <Fragment key={i}>
+              <CodeLine line={l} mark={mark} />
+              {'\n'}
+            </Fragment>
+          ))}
+        </code>
+      </pre>
+    </figure>
+  )
+}
+
+export function CodeSlide({ s }: { s: Of<'code'> }) {
+  const two = s.blocks.length > 1
+  const lines = Math.max(...s.blocks.map((b) => b.code.split('\n').length))
+  // Размер шрифта на сцене подбирается по самому длинному блоку, чтобы код помещался в 1280×720
+  const size = two || lines > 14 ? '@5xl:text-[15px]' : lines > 11 ? '@5xl:text-[16px]' : '@5xl:text-[17px]'
+  const side = !two && s.notes
+  return (
+    <SlideShell>
+      <SlideHeader title={s.title} lead={s.lead} />
+      <SlideBody className={`grid content-center gap-4 @5xl:gap-6 ${side ? '@5xl:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]' : ''}`}>
+        <div className={`grid min-w-0 gap-4 @5xl:gap-5 ${two ? '@5xl:grid-cols-2' : ''}`}>
+          {s.blocks.map((b, i) => (
+            <CodePanel key={i} b={b} lang={s.lang} size={size} />
+          ))}
+        </div>
+        {s.notes && (
+          <ul className={`grid gap-x-10 gap-y-2.5 self-center @5xl:gap-y-4 ${two ? '@3xl:grid-cols-2' : ''}`}>
+            {s.notes.map((n) => (
+              <li key={n} className="flex gap-3 text-[14px] leading-snug @5xl:text-[18px]">
+                <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-accent @5xl:mt-[10px] @5xl:size-2" />
+                <span>{n}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </SlideBody>
     </SlideShell>
   )

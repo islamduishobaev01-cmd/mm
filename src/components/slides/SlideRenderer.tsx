@@ -112,6 +112,8 @@ function Content({ s }: { s: Slide }) {
       return <L.MessageSlide s={s} />
     case 'checklist':
       return <L.ChecklistSlide s={s} />
+    case 'code':
+      return <L.CodeSlide s={s} />
     case 'meter':
       return <L.MeterSlide s={s} />
     case 'summary':
